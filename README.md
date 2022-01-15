@@ -1,66 +1,473 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<p align="center">API DOCUMENTATION</p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+localhostUrl:http://127.0.0.1:8000
+serverUrl:http://appdev.creditplus.ug/bodafuelprojectmobileappapi/public/index.php/api
+baseUrl:{envUrl}/api/
+//3|9byENgHGQ53aneLv32VyX1aQbwCa5IfzHbw965el
 
-## About Laravel
+# IMPORTANT
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Any request after login requires an accessToken which is valid as long as the user is still logged in
+Add Bearer token
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# LOGIN API
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+method:post
+url:{baseUrl}/login
+content type:application/json
+Required fields: email , password
+OnSuccess:
+Sample Access data
+{
+"message": "success",
+"data": {
+"user": {
+"email": "katznicho@gmail.com",
+"name": "katende nicholas",
+"roleId": 1,
+"gender": "male",
+"phoneNumber": "0759983853",
+"profilePicture": null
+},
+"accessToken": "20|Oo2iITszVVzXR0nME0fKVf54WZJA6Jyq9QKsqzsE"
+},
+"statusCode": 200
+}
 
-## Learning Laravel
+OnFailure:
+if either the email or provided password is not correct
+Sample Failure Data
+{
+"message": "failure",
+"data": "invalid credentials",
+"statusCode": 401
+}
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# LOGOUT API
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+method:post
+url:{baseUrl}/logout
+content type:application/json
+No fields required
+On Success
+{
+"message": "failure",
+"data": "logout successfully",
+"statusCode": 401
+}
 
-## Laravel Sponsors
+# FUEL STATION API
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+method:post
+url:{baseUrl}/registerfuelstation
+content type multi-part form-data
+Required fields:fuelStationName(String) ,districtCode(Refer to district API ) ,countyCode(Refer to countyCode API) subCountyCode (Refer to subCounty API), parishCode (Refere Parish API ) , villageCode(Refer to village API ), contactPersonName(String),contactPersonPhone(String),ninNumber(String),bankName(String), longitude(String), latitude(String)
+bankBranch(String),AccName(String),AccNumber(String), frontIDPhoto(file), backIDPhoto(file)
 
-### Premium Partners
+On Success
+Sample Success data
+{
+"message": "success",
+"data": {
+"fuelStationName": "STATIONONE",
+"fuelStationContactPerson": "JAMES",
+"fuelStationContactPhone": "0759983853",
+"districtCode": "140",
+"countyCode": "70",
+"subCountyCode": "12",
+"parishCode": "1",
+"villageCode": "1",
+"merchantCode": "14070121125",
+"bankName": "STANBIC",
+"bankBranch": "KAWEMPE",
+"AccName": "ACC",
+"AccNumber": "1122334",
+"frontIDPhoto": "1308657475002_stationone.png",
+"fuelStationStatus": "0",
+"fuelStationId": 26
+},
+"statusCode": 200
+}
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-- **[Romega Software](https://romegasoftware.com)**
+On Failure
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
+if fields are missing:
+{
+"message": "The given data was invalid.",
+"errors": {
+"districtCode": [
+"The district code field is required."
+],
+"countyCode": [
+"The county code field is required."
+]
+}
 
-## Contributing
+# DISTRICT API
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+method:get
+url:{baseUrl}/districts
+content-type :application/json
+Fields:None required
+On Success
+{
+message:"Success",
+[
 
-## Code of Conduct
+    "data"=>[
+        {
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+"districtCode": 53,
+"districtName": "YUMBE"
+},
+{
+"districtCode": 87,
+"districtName": "ZOMBO"
+}
 
-## Security Vulnerabilities
+    ]
+    "statusCode": 200
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+}
 
-## License
+On Failure
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# COUNTY API
+
+method:post
+url:{baseUrl}/counties
+content-type :application/json
+Fields:districtCode
+On Success
+{
+{
+"message"=>"success",
+"data"=>[
+{
+"districtCode": 87,
+"countyCode": "140",
+"countyName": "LABWOR"
+
+}
+
+    ],
+    "statusCode"=>200
+
+}
+
+On Failure
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
+
+# SUB COUNTY API
+
+method:post
+url:{baseUrl}/subcounties
+content-type :application/json
+Fields:districtCode, countyCode,
+On Success:
+
+{
+"message"=>"Failure",
+"data"=>[
+{
+"districtCode": 70,
+"countyCode": 140,
+"subCountyCode": 1,
+"subCountyName": "ABIM"
+}],
+"statusCode"=>"200"
+
+}
+
+On Failure
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
+
+# PARISH API
+
+method:post
+
+url:{baseUrl}/parishes
+content-type :application/json
+
+Fields:districtCode, countyCode, subCountyCode
+
+On Success
+
+{
+"message"=>"Failure",
+"data"=>[
+{
+"districtCode": 70,
+"countyCode": 140,
+"subCountyCode": 1,
+"parishCode": 52,
+"parishName": "ABONGEPACH"
+},
+}],
+"statusCode"=>"200"
+}
+
+On Failure
+
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
+
+# VILLAGE API
+
+method:post
+content-type :application/json
+
+url:{baseUrl}/villagess
+
+Fields:districtCode, countyCode, subCountyCode, parishCode
+
+On Success
+
+{
+"message"=>"Failure",
+"data"=>[
+{
+"districtCode": 70,
+"countyCode": 140,
+"subCountyCode": 1,
+"parishCode": 52,
+"villageCode":36,
+"villageName": "ABONGEPACH"
+},
+}],
+"statusCode"=>"200"
+}
+
+On Failure
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
+
+# FETCH STATIONS API
+
+method :get
+content-type :application/json
+url:{baseUrl}/stations
+On Success:
+{
+"message": "success",
+"data": [
+{
+"fuelStationId": 1,
+"fuelStationName": "KATENDE NICHOLAS",
+"fuelStationContactPerson": "KATENDE NICHOLAS",
+"fuelStationContactPhone": "0759983853",
+"NIN": null,
+"frontIDPhoto": "",
+"backIDPhoto": "",
+"fuelStationStatus": 1,
+"totalAmount": null,
+"currentAmount": null,
+"bankName": "CENTENARY BANK",
+"bankBranch": "KAWEMPE",
+"AccName": "LUTS",
+"AccNumber": "1233",
+"merchantCode": null,
+"districtCode": null,
+"countyCode": null,
+"subCountyCode": null,
+"parishCode": null,
+"villageCode": null
+},
+"statusCode"=>"200"
+}
+
+On Failure
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
+
+# FETCH STATIONS BY DISTRICT AND COUNTY
+
+method :post
+content-type :application/json
+url:{baseUrl}/fetchstationsbycounty
+RequiredFields:districtCode(integer), countyCode(integer)
+On Success:
+{
+"message": "success",
+"data": [
+{
+"fuelStationId": 1,
+"fuelStationName": "KATENDE NICHOLAS",
+"fuelStationContactPerson": "KATENDE NICHOLAS",
+"fuelStationContactPhone": "0759983853",
+"NIN": null,
+"frontIDPhoto": "",
+"backIDPhoto": "",
+"fuelStationStatus": 1,
+"totalAmount": null,
+"currentAmount": null,
+"bankName": "CENTENARY BANK",
+"bankBranch": "KAWEMPE",
+"AccName": "LUTS",
+"AccNumber": "1233",
+"merchantCode": null,
+"districtCode": null,
+"countyCode": null,
+"subCountyCode": null,
+"parishCode": null,
+"villageCode": null
+},
+"statusCode"=>"200"
+}
+
+On Failure
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
+
+# REGISTER STAGE
+
+method :post
+content-type :application/json
+url:{baseUrl}/registerstage
+RequiredFields:districtCode(integer), countyCode(integer), fuelStationId(integer , use one of the fetch stations APIs ),
+stageName(string),longitude(String), latitude(String)
+
+Success:
+{
+"message": "success",
+"data": {
+"stageName": "STAGEONE",
+"stageStatus": "0",
+"fuelStationId": "1",
+"districtCode": "140",
+"countyCode": "70",
+"subCountyCode": "12",
+"parishCode": "1",
+"villageCode": "1",
+"stageId": 7
+},
+"statuCode": 200
+}
+
+On Failure
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
+
+# REGISTER BODA USER
+
+method :post
+content-type :multi-part form-data
+url:{baseUrl}/registerbodauser
+RequiredFields:bodaUserName(string), bodaUserPhoneNumber(string), bodaUserBodaNumber(string),
+fuelStationId(integer , use one of the fetch stations APIs ), stageId(FETECH STAGE API),
+bodaUserBackPhoto(file) bodaUserFrontPhoto(file),bodaUserRole(string),
+longitude(String), latitude(String)
+Note:BodaUserRole is either Chairman or BodaUser
+if the role is Chairman another field called secondNumber must be provided other wise it throws an error
+
+Success:
+{
+"message": "success",
+"data": {
+"bodaUserName": "Katende",
+"bodaUserStatus": "0",
+"bodaUserNIN": "123456",
+"bodaUserPhoneNumber": "0759983853",
+"bodaUserBodaNumber": "12345",
+"bodaUserBackPhoto": "1091917807225_katende.png",
+"bodaUserFrontPhoto": "38561939402525_katende.png",
+"bodaUserRole": "BodaUser",
+"fuelStationId": "1",
+"stageId": "1"
+},
+"statusCode": 200
+}
+
+On Failure
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
+if some fields are not provided
+
+# FETCH STAGES
+
+method :get
+content-type :application/json
+url:{baseUrl}/stages
+On Success:Returns :
+{
+"message": "success",
+"data": [
+{
+"stageId": 3,
+"stageName": "Kawempe Stage",
+"stageStatus": 0,
+"chairmanId": "21",
+"fuelStationId": 1,
+"location": null,
+"districtCode": null,
+"countyCode": null,
+"subCountyCode": null,
+"parishCode": null,
+"villageCode": null
+}],
+"statusCode"=>"200"
+}
+
+On Failure
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
+
+# REGISTER FUEL AGENT
+
+method :post
+content-type :multi-part form-data
+url:{baseUrl}/registeragent
+RequiredFields:fuelAgentName(string), fuelAgentPhoneNumber(string), secondPhoneNumber(string),
+stationId(integer , use one of the fetch stations APIs ),
+longitude(String), latitude(String)
+backIDPhoto(file) frontIDPhoto(file)
+
+Success:
+{
+"message": "success",
+"data": {
+"fuelAgentName": "Daaki",
+"status": "0",
+"fuelAgentPhoneNumber": "1234656",
+"anotherPhoneNumber": "12345",
+"backIDPhoto": "1518833450825_daaki.png",
+"frontIDPhoto": "119229246880817_daaki.png",
+"stationId": "3",
+"fuelAgentId": 5
+},
+"statusCode": 200
+}
+
+On Failure
+if no token in the headers:
+{
+"message": "Unauthenticated."
+}
+if some fields are not provided
