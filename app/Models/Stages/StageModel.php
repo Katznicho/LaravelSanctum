@@ -30,7 +30,9 @@ class StageModel extends Model
         'countyCode',
         'subCountyCode',
         'parishCode',
-        'villageCode'
+        'villageCode',
+        "latitude",
+        "longitude"
 
     ];
 

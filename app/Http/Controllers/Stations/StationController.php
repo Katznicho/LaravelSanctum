@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Stations;
 
 use App\Http\Controllers\Controller;
 use App\Models\Stations\FuelStationModel;
+use App\Traits\LogTrait;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class StationController extends Controller
 {
+    use LogTrait;
     //
     public function registerStation(Request $request)
     {
@@ -84,7 +86,8 @@ class StationController extends Controller
             "backIPhoto" => $backIdPhoto,
             "fuelStationStatus" => "0",
             "latitude" => $request->latitude,
-            "longitude" => $request->longitude
+            "longitude" => $request->longitude,
+            "NIN" => $request->ninNumber
 
         ]);
 

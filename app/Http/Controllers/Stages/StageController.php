@@ -24,7 +24,7 @@ class StageController extends Controller
             'subCountyCode' => "required",
             'parishCode' => "required",
             'villageCode' => "required",
-            "latitide" => "required",
+            "latitude" => "required",
             "longitude" => "required"
         ]);
 

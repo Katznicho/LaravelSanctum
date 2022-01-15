@@ -30,7 +30,9 @@ class FuelAgentModel extends Model
         "frontIDPhoto",
         'stationId',
         "status",
-        "pin"
+        "pin",
+        "latitude",
+        "longitude"
 
     ];
 

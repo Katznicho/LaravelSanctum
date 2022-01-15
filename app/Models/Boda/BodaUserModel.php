@@ -35,7 +35,9 @@ class BodaUserModel extends Model
         "alternativePhotoNumber",
         'fuelStationId',
         "stageId",
-        "pin"
+        "pin",
+        "latitude",
+        "longitude"
 
     ];
 
